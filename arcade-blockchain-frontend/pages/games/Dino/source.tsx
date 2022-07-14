@@ -1,21 +1,30 @@
-import kaboom from "kaboom";
-import { useRef, useEffect } from "react";
+import kaboom, {GameObj} from "kaboom";
+import { useState, useEffect } from "react";
 
 const DinoRun = () => {
-    const canvasRef = useRef(null);
+  const [canvasRef, setCanvasRef] = useState();
 
     useEffect(() => {
-        document.addEventListener('DOMContentLoaded', () => {
-            const dino = document.querySelector('.dino')
-            const grid = document.querySelector('.grid')
-            const body = document.querySelector('body')
-            const alert = document.getElementById('alert')
-            let isJumping = false
-            let gravity = 0.9
-            let isGameOver = false
+      const k = kaboom({
+        //if you don't want to import to the global namespace
+        global: false,
+        //if you don't want kaboom to create a canvas and insert under document.body
+        canvas: canvasRef,
+        scale: 2,
+
+    });
+
+            document.addEventListener('DOMContentLoaded', () => {
+            const dino: HTMLElement | null = document.querySelector('.dino')
+            const grid: HTMLElement | null = document.querySelector('.grid')
+            const body: HTMLElement | null = document.querySelector('body')
+            const alert: HTMLElement | null = document.getElementById('alert')
+            let isJumping: boolean = false
+            let gravity: number = 0.9
+            let isGameOver: boolean = false
             
-            function control(e) {
-              if (e.keyCode === 32) {
+            function control(e:KeyboardEvent) {
+              if (e.code === "32") {
                 if (!isJumping) {
                   isJumping = true
                   jump()
@@ -24,10 +33,11 @@ const DinoRun = () => {
             }
             document.addEventListener('keyup', control)
             
-            let position = 0
+            let position: number = 0
+            
             function jump() {
-              let count = 0
-              let timerId = setInterval(function () {
+              let count: number = 0
+              let timerId: NodeJS.Timer = setInterval(function () {
                 //move down
                 if (count === 15) {
                   clearInterval(timerId)

@@ -1,33 +1,33 @@
 import kaboom from "kaboom";
-import { useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const Breakout = () => {
-    const canvasRef = useRef(null);
+    const [canvasRef, setCanvasRef] = useState();
 
     useEffect(() => {
         const k = kaboom({
             //if you don't want to import to the global namespace
             global: false,
             //if you don't want kaboom to create a canvas and insert under document.body
-            canvas: canvasRef.current,
+            canvas: canvasRef,
             background: [0, 128, 0],
 
         });
 
-        k.loadSound("explode", "/audio/snake/explode.mp3");
-        k.loadSound("score", "/audio/score.mp3");
-        k.loadSound("signal", "/audio/signal.mp3");
+        k.loadSound("explode", "../audio/snake/explode.mp3");
+        k.loadSound("score", "../audio/score.mp3");
+        k.loadSound("signal", "../audio/signal.mp3");
 
         // Adjust global volume
         k.volume(0.5)
 
-        let score = 0;
-        let levelHits = 0;
-        const bricks_row = 14;
-        const rows = 6;
-        let level = 1;
-        const total_levels = 3;
-        let numOfBalls = 3;
+        let score: number = 0;
+        let levelHits: number = 0;
+        const bricks_row: number = 14;
+        const rows: number = 6;
+        let level: number = 1;
+        const total_levels: number = 3;
+        let numOfBalls: number = 3;
 
         k.add([
             k.pos(k.width() / 2, k.height() - 100),
@@ -191,7 +191,7 @@ const Breakout = () => {
             startGame = true;
         }
 
-        function addButton(txt, p, f) {
+        function addButton(txt:string, p:number, f:any) {
 
             const btn = k.add([
                 k.text(txt, { size: 32 }),
@@ -199,6 +199,7 @@ const Breakout = () => {
                 k.area({ cursor: "pointer", }),
                 k.scale(1),
                 k.origin("center"),
+                k.color(0,0,0)
             ])
 
             btn.onClick(f)
@@ -214,13 +215,13 @@ const Breakout = () => {
                     btn.scale = k.vec2(1.2)
                 } else {
                     btn.scale = k.vec2(1)
-                    btn.color = k.rgb()
+                    btn.color = k.rgb(0, 100, 0)
                 }
             })
 
         }
 
-        addButton("Start", k.vec2(k.width() / 2, k.height() - 40), () => {
+        addButton("Start", k.Vec2(k.width() / 2, k.height() - 40), () => {
             if (level === 1 || level > total_levels) {
                 level = 1;
                 score = 0;

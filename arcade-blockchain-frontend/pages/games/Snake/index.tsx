@@ -1,9 +1,10 @@
 import kaboom, { GameObj } from "kaboom";
-import { useState, useEffect } from "react";
-
+import { useState, useRef, useEffect } from "react";
+import background from "../../../public/images/snake/background.png"
 
 const Snake = () => {
     const [canvasRef, setCanvasRef] = useState();
+
 
     useEffect(() => {
         const k = kaboom({
@@ -15,29 +16,18 @@ const Snake = () => {
 
         });
 
-        k.loadSound("other-worldly-foe", "../audio/snake/otherworldlyfoe.mp3");
-        k.loadSound("burp", "../audio/snake/burp.mp3");
-        k.loadSound("powerup", "../audio/snake/powerup.mp3");
-        k.loadSound("explode", "../audio/snake/explode.mp3");
 
-        const music = k.play("other-worldly-foe", {
-            loop: true,
-        });
-
-        // Adjust global volume
-        k.volume(0.5)
-
-        k.loadSprite("pizza", "../images/snake/pizza.png");
-        k.loadSprite("background", "../images/snake/background.png");
-        k.loadSprite("fence-top", "../images/snake/fence-top.png");
-        k.loadSprite("fence-bottom", "../images/snake/fence-bottom.png");
-        k.loadSprite("fence-left", "../images/snake/fence-left.png");
-        k.loadSprite("fence-right", "../images/snake/fence-right.png");
-        k.loadSprite("post-top-left", "../images/snake/post-top-left.png");
-        k.loadSprite("post-top-right", "../images/snake/post-top-right.png");
-        k.loadSprite("post-bottom-left", "../images/snake/post-bottom-left.png");
-        k.loadSprite("post-bottom-right", "../images/snake/post-bottom-right.png");
-        k.loadSprite("snake-skin", "../images/snake/snake-skin.png");
+        k.loadSprite("pizza", "/snake/pizza.png");
+        k.loadSprite("background", "/snake/background.png")
+        k.loadSprite("fence-top", "/snake/fence-top.png");
+        k.loadSprite("fence-bottom", "/snake/fence-bottom.png");
+        k.loadSprite("fence-left", "/snake/fence-left.png");
+        k.loadSprite("fence-right", "/snake/fence-right.png");
+        k.loadSprite("post-top-left", "/snake/post-top-left.png");
+        k.loadSprite("post-top-right", "/snake/post-top-right.png");
+        k.loadSprite("post-bottom-left", "/snake/post-bottom-left.png");
+        k.loadSprite("post-bottom-right", "/snake/post-bottom-right.png");
+        k.loadSprite("snake-skin", "/snake/snake-skin.png");
 
         k.layers(
             [
@@ -152,8 +142,7 @@ const Snake = () => {
                 respawn_food();
                 run_action = true;
                 scoreLabel.text = "Score: " + (snake_length - 3).toString();
-                k.play("powerup");
-                music.play();
+               
             });
         }
 
@@ -255,7 +244,7 @@ const Snake = () => {
         }
 
         k.onCollide("snake", "food", (s, f) => {
-            k.play("burp");
+           
             snake_length++;
             scoreLabel.text = "Score: " + (snake_length - 3).toString();
             respawn_food();
@@ -263,17 +252,16 @@ const Snake = () => {
 
         k.onCollide("snake", "wall", (s, w) => {
             run_action = false;
-            k.play("explode");
+       
             k.shake(12);
-            music.pause();
             //respawn_all();
         });
 
         k.onCollide("snake", "snake", (s, t) => {
             run_action = false;
-            k.play("explode");
+           
             k.shake(12);
-            music.pause();
+
             //respawn_all();
         });
 
@@ -309,7 +297,7 @@ const Snake = () => {
         
         }
 
-        addButton("Start", k.Vec2(375, 100), () => respawn_all());
+        addButton("Start", k.vec2(375, 100), () => respawn_all());
 
         k.add([
             k.text("Snake", {
@@ -334,7 +322,7 @@ const Snake = () => {
 
     }, []);
 
-    return <div className="board"><canvas ref={canvasRef}></canvas></div>
+    return (<div className="board"><canvas ref={canvasRef}></canvas></div>)
 };
 
 export default Snake;
